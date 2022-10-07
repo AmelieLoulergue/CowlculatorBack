@@ -135,7 +135,7 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: "Identifiants incorrects" });
           }
           const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY, {
-            expiresIn: "2h",
+            expiresIn: "5h",
           });
           user.token = token;
           user

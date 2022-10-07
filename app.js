@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const userProfileRoutes = require("./routes/userProfile");
-// const productRoutes = require("./routes/product");
+const resultRoutes = require("./routes/result");
 const userRoutes = require("./routes/user");
 const ibmRoutes = require("./routes/ibmCloud");
 const bodyParser = require("body-parser");
@@ -36,5 +36,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/userProfile", userProfileRoutes);
 app.use("/api/auth", userRoutes);
 app.use("/api/csv", ibmRoutes);
+app.use("/api/result", resultRoutes);
 // app.use("/api/product", productRoutes);
+
 module.exports = app;
