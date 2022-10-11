@@ -10,38 +10,34 @@ var config = {
 var cos = new AWS.S3(config);
 
 exports.createIbmCloudData = (req, res, next) => {
-  //   console.log("coucou");
-  const itemName = "TEST";
-  //   console.log(`Creating new item: ${itemName}`);
   const allItems = res.locals.allResults;
-  //   console.log(req.body.result);s
-  const obj = req.body.response;
-  //   console.log(req.body.result);
-  let test = [];
-  let result = Object.entries(req.body.result)
-    .map((value, index) => [...test, { id: value[0], response: value[1] }])
-    .flat();
+  const obj = req.body.result;
+  // console.log(obj, "coucou");
+  // let test = [];
+  // let result = Object.entries(req.body.result)
+  //   .map((value, index) => [...test, { id: value[0], response: value[1] }])
+  //   .flat();
 
   const csv = jsonToCsv({
     allItems: allItems,
-    items: [...obj, ...result],
     userId: req.auth.userId,
   });
+  // console.log(csv);
   //   const csvClean = cleanCsv(csv);
   //   console.log(csvClean);
-  //   return cos
-  //     .putObject({
-  //       Bucket: "clous-storage-carbonb-cos-standard-26b",
-  //       Key: "listOfQuestions.csv",
-  //       Body: csv,
-  //     })
-  //     .promise()
-  //     .then(() => {
-  //       console.log(`Item: ${itemName} created!`);
-  //     })
-  //     .catch((e) => {
-  //       console.error(`ERROR: ${e.code} - ${e.message}\n`);
-  //     });
+  return cos
+    .putObject({
+      Bucket: "clous-storage-carbonb-cos-standard-26b",
+      Key: "CowlculatorDB.csv",
+      Body: csv,
+    })
+    .promise()
+    .then(() => {
+      console.log(`Item: ${itemName} created!`);
+    })
+    .catch((e) => {
+      console.error(`ERROR: ${e.code} - ${e.message}\n`);
+    });
 
   //   console.log(
   //     `Retrieving item from bucket: "clous-storage-carbonb-cos-standard-26b", key: ${req.itemName}`

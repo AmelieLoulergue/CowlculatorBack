@@ -138,6 +138,7 @@ exports.login = (req, res, next) => {
             expiresIn: "5h",
           });
           user.token = token;
+
           user
             .save()
             .then((resp) => {
