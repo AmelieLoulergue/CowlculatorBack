@@ -1,49 +1,83 @@
-const jsonToCsv = ({ allItems, items, userId }) => {
-  //   console.log(allItems);
-  const allInformations = allItems.map((element) => {
-    return {
-      userId: element.user._id.toString(),
-      response: element.response,
-      result: element.result,
-    };
+const jsonToCsv = ({ allItems, userId }) => {
+  // console.log(allItems, "allItems", allItems.length);
+  const allUserIds = allItems.map((item) => item.user._id.valueOf());
+  const allLines = allItems.map((item, index) => item.result);
+  // console.log(allUserIds, allLines);
+  let test = "";
+  let allLinesResult = [];
+  allLines.map((line, lineIndex) => {
+    test = Object.entries(line).map((value, index) => {
+      return {
+        [`${value[1].id}`]: value[1].response || "",
+      };
+    });
+    // console.log(Object.assign(...test));
+    allLinesResult = [
+      ...allLinesResult,
+      { userId: allUserIds[lineIndex], ...Object.assign(...test) },
+    ];
   });
-  const allResults = allItems.map((element) => element.result);
-  console.log(allInformations, "coucou");
-  let itemsToCSV = [];
-  itemsToCSV = items
-    .map((element) => [...itemsToCSV, { [`${element.id}`]: element.response }])
-    .flat();
-  const cleanItems = Object.assign({}, ...itemsToCSV);
-  let headerMaster = ["user_id"];
-  let subHeader = [" "];
-  let lineItem = [userId];
-  Object.entries(cleanItems).map((element) => {
-    if (typeof element[1] === "object") {
-      headerMaster = [
-        ...headerMaster,
-        element[0],
-        Array(Object.keys(element[1]).length - 1).fill(" "),
-      ].flat();
-      subHeader = [...subHeader, Object.keys(element[1])].flat();
-      lineItem = [...lineItem, Object.values(element[1])].flat();
-    } else {
-      headerMaster = [...headerMaster, element[0]];
-      subHeader = [...subHeader, " "];
-      lineItem = [...lineItem, element[1]];
-    }
-  });
+  const header = Object.keys(allLinesResult[0]);
+  const headerString = header.join(",");
+  // console.log(header);
+  // handle null or undefined values here
   const replacer = (key, value) => value ?? "";
-  const headerMasterString = headerMaster.join(",");
-  const subHeaderString = subHeader
-    .map((subheader) => JSON.stringify(subheader, replacer))
-    .join(",");
-  const lineItemString = lineItem
-    .map((line) => JSON.stringify(line, replacer))
-    .join(",");
-  const csv = [headerMasterString, subHeaderString, lineItemString].join(
-    "\r\n"
+  const rowItems = allLinesResult.map((row) =>
+    header
+      .map((fieldName) => {
+        // console.log("jesuisici", row[fieldName], typeof row[fieldName]);
+        if (typeof row[fieldName] === "object") {
+          console.log("jesuisicidedans", row[fieldName]);
+          let valueToReturn = Object.entries(row[fieldName]).map(
+            (value) => value[1]
+          );
+          console.log("result", JSON.stringify(valueToReturn, replacer));
+          return JSON.stringify(valueToReturn.join(" "), replacer);
+        }
+        console.log(row[fieldName]);
+        if (
+          row[fieldName] === "" ||
+          row[fieldName] === null ||
+          row[fieldName] === undefined
+        ) {
+          return JSON.stringify(" ");
+        }
+        return JSON.stringify(row[fieldName], replacer);
+      })
+      .join(",")
   );
-  //   console.log(csv);
+  const csv = [headerString, ...rowItems].join("\r\n");
+  // console.log(rowItems);
+  // let headerMaster = ["user_id"];
+  // let subHeader = [" "];
+  // let lineItem = [userId];
+  // Object.entries(cleanItems).map((element) => {
+  //   if (typeof element[1] === "object") {
+  //     headerMaster = [
+  //       ...headerMaster,
+  //       element[0],
+  //       Array(Object.keys(element[1]).length - 1).fill(" "),
+  //     ].flat();
+  //     subHeader = [...subHeader, Object.keys(element[1])].flat();
+  //     lineItem = [...lineItem, Object.values(element[1])].flat();
+  //   } else {
+  //     headerMaster = [...headerMaster, element[0]];
+  //     subHeader = [...subHeader, " "];
+  //     lineItem = [...lineItem, element[1]];
+  //   }
+  // });
+  // const replacer = (key, value) => value ?? "";
+  // const headerMasterString = headerMaster.join(",");
+  // const subHeaderString = subHeader
+  //   .map((subheader) => JSON.stringify(subheader, replacer))
+  //   .join(",");
+  // const lineItemString = lineItem
+  //   .map((line) => JSON.stringify(line, replacer))
+  //   .join(",");
+  // const csv = [headerMasterString, subHeaderString, lineItemString].join(
+  //   "\r\n"
+  // );
+  // //   console.log(csv);
   return csv;
 };
 

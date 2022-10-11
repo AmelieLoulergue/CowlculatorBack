@@ -9,10 +9,20 @@ const ibmCtrl = require("../controllers/ibmCloud");
 //ROUTE GET
 router.get("/", resultCtrl.getResults);
 // ROUTE SHOW
-router.get("/:id", (req, res, next) => {
-  Result.findOne({ _id: req.params.id })
-    .then((result) => res.status(200).json({ result: result }))
+router.get("/:userId", (req, res, next) => {
+  console.log(req.params.userId);
+  Result.find()
+    .then((result) =>
+      res.status(200).json({
+        result: result.filter(
+          (element) => element.user._id.valueOf() === req.params.userId
+        ),
+      })
+    )
     .catch((error) => res.status(404).json({ error }));
+  // Result.findOne({ _id: req.params.id })
+  //   .then((result) => res.status(200).json({ result: result }))
+  //   .catch((error) => res.status(404).json({ error }));
 });
 // ROUTE POST
 router.post(
