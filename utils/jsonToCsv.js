@@ -27,14 +27,11 @@ const jsonToCsv = ({ allItems, userId }) => {
       .map((fieldName) => {
         // console.log("jesuisici", row[fieldName], typeof row[fieldName]);
         if (typeof row[fieldName] === "object") {
-          console.log("jesuisicidedans", row[fieldName]);
           let valueToReturn = Object.entries(row[fieldName]).map(
             (value) => value[1]
           );
-          console.log("result", JSON.stringify(valueToReturn, replacer));
           return JSON.stringify(valueToReturn.join(" "), replacer);
         }
-        console.log(row[fieldName]);
         if (
           row[fieldName] === "" ||
           row[fieldName] === null ||
