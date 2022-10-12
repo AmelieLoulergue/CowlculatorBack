@@ -8,9 +8,9 @@ const resultCtrl = require("../controllers/result");
 const ibmCtrl = require("../controllers/ibmCloud");
 //ROUTE GET
 router.get("/", resultCtrl.getResults);
+router.get("/researcher", resultCtrl.getResultsResearcher);
 // ROUTE SHOW
-router.get("/:userId", (req, res, next) => {
-  console.log(req.params.userId);
+router.get("/user/:userId", (req, res, next) => {
   Result.find()
     .then((result) =>
       res.status(200).json({

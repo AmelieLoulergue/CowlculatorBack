@@ -25,3 +25,12 @@ exports.getResults = (req, res, next) => {
     })
     .catch((error) => res.status(400).json({ error }));
 };
+exports.getResultsResearcher = (req, res, next) => {
+  Result.find()
+    .then((result) => {
+      res.status(201).json({
+        result: result,
+      });
+    })
+    .catch((error) => res.status(400).json({ error }));
+};
