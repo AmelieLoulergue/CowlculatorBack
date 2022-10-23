@@ -5,6 +5,7 @@ const Joi = require("joi");
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  farmName: { type: String },
   isConfirmed: { type: Boolean },
   token: { type: String },
   userType: { type: String, required: true },

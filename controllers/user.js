@@ -35,6 +35,7 @@ exports.signup = async (req, res, next) => {
         password: hash,
         isConfirmed: false,
         userType: req.body.userType,
+        farmName: "",
       });
       const isValidEmail = () => {
         if (req.body.userType === "researcher") {
@@ -150,6 +151,7 @@ exports.login = (req, res, next) => {
                   email: resp.email,
                   isConfirmed: resp.isConfirmed,
                   userType: resp.userType,
+                  farmName: resp.farmName,
                 },
                 message: `<p><small>Tu es bien connecté !<span>&#128522;</span> </p><p>Contents de te retrouver ${resp.email}</small></p>`,
               });
@@ -357,6 +359,27 @@ exports.getUser = (req, res, next) => {
         email: user.email,
         isConfirmed: user.isConfirmed,
       });
+    })
+    .catch((error) => {
+      res.status(404).json({
+        error: error,
+      });
+    });
+};
+exports.updateUser = (req, res, next) => {
+  console.log("je suis la");
+  console.log(req.body.farmName);
+  User.findOneAndUpdate(
+    {
+      _id: req.params.userId,
+    },
+    { farmName: req.body.farmName },
+    {
+      new: true,
+    }
+  )
+    .then((user) => {
+      res.status(200).json(user);
     })
     .catch((error) => {
       res.status(404).json({

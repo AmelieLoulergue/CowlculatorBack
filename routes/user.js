@@ -12,5 +12,6 @@ router.post("/password-reset/:userId/:token", userCtrl.resetPassword);
 router.post("/confirm-email/:userId/:token", userCtrl.confirmEmail);
 router.post("/changeEmail", auth, userCtrl.updateEmail);
 router.get("/user/:userId", auth, userCtrl.getUser);
+router.post("/user/:userId", auth, userCtrl.updateUser);
 router.delete("/delete-account/:userId", auth, userCtrl.deleteAccount);
 module.exports = router;
