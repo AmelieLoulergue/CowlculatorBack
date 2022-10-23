@@ -19,6 +19,7 @@ exports.signup = async (req, res, next) => {
         error: "L'email et le mot de passe doivent être renseignés ",
       });
     const { error } = validate(req.body);
+    console.log(error);
     if (error) {
       return error.details[0].path[0] === "email"
         ? res.status(400).json({ error: { email: "Email invalide" } })

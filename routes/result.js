@@ -7,10 +7,10 @@ const auth = require("../middleware/auth");
 const resultCtrl = require("../controllers/result");
 const ibmCtrl = require("../controllers/ibmCloud");
 //ROUTE GET
-router.get("/", resultCtrl.getResults);
+router.get("/", auth, resultCtrl.getResults);
 router.get("/researcher", resultCtrl.getResultsResearcher);
 // ROUTE SHOW
-router.get("/user/:userId", (req, res, next) => {
+router.get("/user/:userId", auth, (req, res, next) => {
   Result.find()
     .then((result) =>
       res.status(200).json({
