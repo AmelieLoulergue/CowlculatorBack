@@ -66,7 +66,7 @@ exports.signup = async (req, res, next) => {
                   });
                   sendEmail(
                     user.email,
-                    "Bienvenue chez nous!",
+                    "Welcome to Cowlculator!",
                     emailContentHtml
                   );
                   res.json({
