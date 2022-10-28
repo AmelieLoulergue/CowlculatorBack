@@ -61,7 +61,7 @@ exports.signup = async (req, res, next) => {
               })
                 .save()
                 .then((resp) => {
-                  const link = `${process.env.BASE_URL}/confirm-email/${user._id}/${resp.token}`;
+                  const link = `${process.env.BASE_URL}confirm-email/${user._id}/${resp.token}`;
                   const emailContentHtml = ConfirmSignUpEmail({
                     link,
                     email: user.email,
@@ -292,7 +292,7 @@ exports.updateEmail = async (req, res, next) => {
         })
           .save()
           .then((res) => {
-            const link = `${process.env.BASE_URL}/confirm-email/${user._id}/${res.token}`;
+            const link = `${process.env.BASE_URL}confirm-email/${user._id}/${res.token}`;
             const emailContentHtml = ChangeEmail({
               link,
               email: user.email,
