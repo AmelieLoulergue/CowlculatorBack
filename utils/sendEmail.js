@@ -10,7 +10,7 @@ const sendEmail = async (email, subject, html) => {
     const transporter = nodemailer.createTransport(sgTransport(options));
 
     await transporter.sendMail({
-      from: "Cowlculator@gmail.com",
+      from: "cowlculator@gmail.com",
       to: email,
       subject: subject,
       html: html,
